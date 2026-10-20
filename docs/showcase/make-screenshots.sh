@@ -5,9 +5,9 @@ script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 project_root="$(cd "$script_dir/../.." && pwd)"
 cd "$project_root"
 
-check_output="$(KB_DIR=examples/synthetic/kb cargo run --quiet --manifest-path "$project_root/Cargo.toml" -- --check)"
-library_output="$(KB_DIR=examples/synthetic/kb cargo run --quiet --manifest-path "$project_root/Cargo.toml" -- --library)"
-corpus_output="$(KB_DIR=examples/synthetic/kb cargo run --quiet --manifest-path "$project_root/Cargo.toml" -- --corpus)"
+check_output="$(KB_DIR=examples/synthetic/kb cargo run --quiet --manifest-path Cargo.toml -- --check)"
+library_output="$(KB_DIR=examples/synthetic/kb cargo run --quiet --manifest-path Cargo.toml -- --library)"
+corpus_output="$(KB_DIR=examples/synthetic/kb cargo run --quiet --manifest-path Cargo.toml -- --corpus)"
 xml_escape() { sed -e 's/\&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g'; }
 check_output="$(printf '%s' "$check_output" | xml_escape)"
 library_output="$(printf '%s' "$library_output" | xml_escape)"
