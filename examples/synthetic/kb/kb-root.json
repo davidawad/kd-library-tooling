@@ -1,0 +1,6 @@
+{
+  "kb_root": "examples/synthetic",
+  "library_dir": "examples/synthetic/library",
+  "corpus_dir": "examples/synthetic/corpus",
+  "specimen_dir": "examples/synthetic/specimens"
+}

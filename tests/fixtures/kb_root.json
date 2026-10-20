@@ -1,0 +1,385 @@
+[
+ {
+  "spec": {
+   "name": "base",
+   "argv": [],
+   "files": {
+    "kb/kb-root.json": "{\"kb_root\": \"{TMP}/kbroot\", \"library_dir\": \"{TMP}/kbroot/library\", \"knowledge_repo\": {\"url\": \"fixture@example.invalid:none.git\", \"checkout_dir\": \"{TMP}/checkout\", \"cutover_done\": false}}",
+    "kb/overlays/defaults.json": "{\"kb_root\": \"{TMP}/kbroot\"}"
+   },
+   "dirs": [
+    "kbroot/library"
+   ]
+  },
+  "expected": {
+   "code": 0,
+   "stdout": "{TMP}/kbroot\n",
+   "stderr": "",
+   "tree": {}
+  }
+ },
+ {
+  "spec": {
+   "name": "base--library",
+   "argv": [
+    "--library"
+   ],
+   "files": {
+    "kb/kb-root.json": "{\"kb_root\": \"{TMP}/kbroot\", \"library_dir\": \"{TMP}/kbroot/library\", \"knowledge_repo\": {\"url\": \"fixture@example.invalid:none.git\", \"checkout_dir\": \"{TMP}/checkout\", \"cutover_done\": false}}",
+    "kb/overlays/defaults.json": "{\"kb_root\": \"{TMP}/kbroot\"}"
+   },
+   "dirs": [
+    "kbroot/library"
+   ]
+  },
+  "expected": {
+   "code": 0,
+   "stdout": "{TMP}/kbroot/library\n",
+   "stderr": "",
+   "tree": {}
+  }
+ },
+ {
+  "spec": {
+   "name": "base--json",
+   "argv": [
+    "--json"
+   ],
+   "files": {
+    "kb/kb-root.json": "{\"kb_root\": \"{TMP}/kbroot\", \"library_dir\": \"{TMP}/kbroot/library\", \"knowledge_repo\": {\"url\": \"fixture@example.invalid:none.git\", \"checkout_dir\": \"{TMP}/checkout\", \"cutover_done\": false}}",
+    "kb/overlays/defaults.json": "{\"kb_root\": \"{TMP}/kbroot\"}"
+   },
+   "dirs": [
+    "kbroot/library"
+   ]
+  },
+  "expected": {
+   "code": 0,
+   "stdout": "{\n  \"kb_root\": \"{TMP}/kbroot\",\n  \"library_dir\": \"{TMP}/kbroot/library\",\n  \"knowledge_repo\": {\n    \"url\": \"fixture@example.invalid:none.git\",\n    \"checkout_dir\": \"{TMP}/checkout\",\n    \"cutover_done\": false\n  }\n}\n",
+   "stderr": "",
+   "tree": {}
+  }
+ },
+ {
+  "spec": {
+   "name": "base--check",
+   "argv": [
+    "--check"
+   ],
+   "files": {
+    "kb/kb-root.json": "{\"kb_root\": \"{TMP}/kbroot\", \"library_dir\": \"{TMP}/kbroot/library\", \"knowledge_repo\": {\"url\": \"fixture@example.invalid:none.git\", \"checkout_dir\": \"{TMP}/checkout\", \"cutover_done\": false}}",
+    "kb/overlays/defaults.json": "{\"kb_root\": \"{TMP}/kbroot\"}"
+   },
+   "dirs": [
+    "kbroot/library"
+   ]
+  },
+  "expected": {
+   "code": 0,
+   "stdout": "kb_root: clean\n",
+   "stderr": "",
+   "tree": {}
+  }
+ },
+ {
+  "spec": {
+   "name": "check-sibling-prefix",
+   "argv": [
+    "--check"
+   ],
+   "files": {
+    "kb/kb-root.json": "{\"kb_root\": \"{TMP}/kbroot\", \"library_dir\": \"{TMP}/kbroot-evil/library\", \"knowledge_repo\": {\"url\": \"fixture@example.invalid:none.git\", \"checkout_dir\": \"{TMP}/checkout\", \"cutover_done\": false}}",
+    "kb/overlays/defaults.json": "{\"kb_root\": \"{TMP}/kbroot\"}"
+   },
+   "dirs": [
+    "kbroot/library",
+    "kbroot-evil/library"
+   ]
+  },
+  "expected": {
+   "code": 1,
+   "stdout": "",
+   "stderr": "kb_root DRIFT: library_dir {TMP}/kbroot-evil/library is not under kb_root {TMP}/kbroot\n",
+   "tree": {}
+  }
+ },
+ {
+  "spec": {
+   "name": "check-overlays-disagree",
+   "argv": [
+    "--check"
+   ],
+   "files": {
+    "kb/kb-root.json": "{\"kb_root\": \"{TMP}/kbroot\", \"library_dir\": \"{TMP}/kbroot/library\", \"knowledge_repo\": {\"url\": \"fixture@example.invalid:none.git\", \"checkout_dir\": \"{TMP}/checkout\", \"cutover_done\": false}}",
+    "kb/overlays/defaults.json": "{\"kb_root\": \"~/somewhere-else\"}"
+   },
+   "dirs": [
+    "kbroot/library"
+   ]
+  },
+  "expected": {
+   "code": 1,
+   "stdout": "",
+   "stderr": "kb_root DRIFT: kb_root drift: kb-root.json says '{TMP}/kbroot' but overlays/defaults.json says '~/somewhere-else' — they must agree\n",
+   "tree": {}
+  }
+ },
+ {
+  "spec": {
+   "name": "check-overlays-missing",
+   "argv": [
+    "--check"
+   ],
+   "files": {
+    "kb/kb-root.json": "{\"kb_root\": \"{TMP}/kbroot\", \"library_dir\": \"{TMP}/kbroot/library\", \"knowledge_repo\": {\"url\": \"fixture@example.invalid:none.git\", \"checkout_dir\": \"{TMP}/checkout\", \"cutover_done\": false}}"
+   },
+   "dirs": [
+    "kbroot/library"
+   ],
+   "ignore_stderr": true
+  },
+  "expected": {
+   "code": 1,
+   "stdout": "",
+   "stderr": null,
+   "tree": {}
+  }
+ },
+ {
+  "spec": {
+   "name": "check-overlays-no-key",
+   "argv": [
+    "--check"
+   ],
+   "files": {
+    "kb/kb-root.json": "{\"kb_root\": \"{TMP}/kbroot\", \"library_dir\": \"{TMP}/kbroot/library\", \"knowledge_repo\": {\"url\": \"fixture@example.invalid:none.git\", \"checkout_dir\": \"{TMP}/checkout\", \"cutover_done\": false}}",
+    "kb/overlays/defaults.json": "{\"other\": 1}"
+   },
+   "dirs": [
+    "kbroot/library"
+   ]
+  },
+  "expected": {
+   "code": 1,
+   "stdout": "",
+   "stderr": "kb_root DRIFT: cannot read overlays/defaults.json kb_root: 'kb_root'\n",
+   "tree": {}
+  }
+ },
+ {
+  "spec": {
+   "name": "check-overlays-bad-json",
+   "argv": [
+    "--check"
+   ],
+   "files": {
+    "kb/kb-root.json": "{\"kb_root\": \"{TMP}/kbroot\", \"library_dir\": \"{TMP}/kbroot/library\", \"knowledge_repo\": {\"url\": \"fixture@example.invalid:none.git\", \"checkout_dir\": \"{TMP}/checkout\", \"cutover_done\": false}}",
+    "kb/overlays/defaults.json": "{nope"
+   },
+   "dirs": [
+    "kbroot/library"
+   ],
+   "ignore_stderr": true
+  },
+  "expected": {
+   "code": 1,
+   "stdout": "",
+   "stderr": null,
+   "tree": {}
+  }
+ },
+ {
+  "spec": {
+   "name": "check-missing-root",
+   "argv": [
+    "--check"
+   ],
+   "files": {
+    "kb/kb-root.json": "{\"kb_root\": \"{TMP}/kbroot\", \"library_dir\": \"{TMP}/kbroot/library\", \"knowledge_repo\": {\"url\": \"fixture@example.invalid:none.git\", \"checkout_dir\": \"{TMP}/checkout\", \"cutover_done\": false}}",
+    "kb/overlays/defaults.json": "{\"kb_root\": \"{TMP}/kbroot\"}"
+   },
+   "dirs": []
+  },
+  "expected": {
+   "code": 1,
+   "stdout": "",
+   "stderr": "kb_root DRIFT: kb_root does not exist on disk: {TMP}/kbroot\n",
+   "tree": {}
+  }
+ },
+ {
+  "spec": {
+   "name": "check-cutover-no-symlink",
+   "argv": [
+    "--check"
+   ],
+   "files": {
+    "kb/kb-root.json": "{\"kb_root\": \"{TMP}/kbroot\", \"library_dir\": \"{TMP}/kbroot/library\", \"knowledge_repo\": {\"url\": \"u\", \"checkout_dir\": \"{TMP}/checkout\", \"cutover_done\": true}}",
+    "kb/overlays/defaults.json": "{\"kb_root\": \"{TMP}/kbroot\"}"
+   },
+   "dirs": [
+    "kbroot/library"
+   ]
+  },
+  "expected": {
+   "code": 1,
+   "stdout": "",
+   "stderr": "kb_root DRIFT: cutover_done=true but kb_root is not a symlink (expected symlink -> {TMP}/checkout)\n",
+   "tree": {}
+  }
+ },
+ {
+  "spec": {
+   "name": "check-cutover-good-symlink",
+   "argv": [
+    "--check"
+   ],
+   "files": {
+    "kb/kb-root.json": "{\"kb_root\": \"{TMP}/kbroot\", \"library_dir\": \"{TMP}/kbroot/library\", \"knowledge_repo\": {\"url\": \"u\", \"checkout_dir\": \"{TMP}/checkout\", \"cutover_done\": true}}",
+    "kb/overlays/defaults.json": "{\"kb_root\": \"{TMP}/kbroot\"}"
+   },
+   "dirs": [
+    "checkout/library"
+   ],
+   "symlinks": {
+    "kbroot": "{TMP}/checkout"
+   }
+  },
+  "expected": {
+   "code": 0,
+   "stdout": "kb_root: clean\n",
+   "stderr": "",
+   "tree": {}
+  }
+ },
+ {
+  "spec": {
+   "name": "check-cutover-wrong-symlink",
+   "argv": [
+    "--check"
+   ],
+   "files": {
+    "kb/kb-root.json": "{\"kb_root\": \"{TMP}/kbroot\", \"library_dir\": \"{TMP}/kbroot/library\", \"knowledge_repo\": {\"url\": \"u\", \"checkout_dir\": \"{TMP}/checkout\", \"cutover_done\": true}}",
+    "kb/overlays/defaults.json": "{\"kb_root\": \"{TMP}/kbroot\"}"
+   },
+   "dirs": [
+    "checkout/library",
+    "other/library"
+   ],
+   "symlinks": {
+    "kbroot": "{TMP}/other"
+   }
+  },
+  "expected": {
+   "code": 1,
+   "stdout": "",
+   "stderr": "kb_root DRIFT: cutover_done=true but kb_root resolves to {TMP}/other, not checkout_dir {TMP}/checkout\n",
+   "tree": {}
+  }
+ },
+ {
+  "spec": {
+   "name": "tilde-expansion",
+   "argv": [],
+   "files": {
+    "kb/kb-root.json": "{\"kb_root\": \"~/kbroot\", \"library_dir\": \"~/kbroot/library\", \"knowledge_repo\": {\"url\": \"fixture@example.invalid:none.git\", \"checkout_dir\": \"{TMP}/checkout\", \"cutover_done\": false}}",
+    "kb/overlays/defaults.json": "{\"kb_root\": \"~/kbroot\"}"
+   },
+   "dirs": [
+    "kbroot/library"
+   ]
+  },
+  "expected": {
+   "code": 0,
+   "stdout": "{TMP}/synthetic-home/kbroot\n",
+   "stderr": "",
+   "tree": {}
+  }
+ },
+ {
+  "spec": {
+   "name": "tilde-library-check",
+   "argv": [
+    "--check"
+   ],
+   "files": {
+    "kb/kb-root.json": "{\"kb_root\": \"~/kbroot\", \"library_dir\": \"~/kbroot/library\", \"knowledge_repo\": {\"url\": \"fixture@example.invalid:none.git\", \"checkout_dir\": \"{TMP}/checkout\", \"cutover_done\": false}}",
+    "kb/overlays/defaults.json": "{\"kb_root\": \"~/kbroot\"}"
+   },
+   "dirs": [
+    "synthetic-home/kbroot/library"
+   ]
+  },
+  "expected": {
+   "code": 0,
+   "stdout": "kb_root: clean\n",
+   "stderr": "",
+   "tree": {}
+  }
+ },
+ {
+  "spec": {
+   "name": "json-unicode",
+   "argv": [
+    "--json"
+   ],
+   "files": {
+    "kb/kb-root.json": "{\"kb_root\": \"{TMP}/kbroot\\u00e9\\ud83d\\ude00\", \"library_dir\": \"{TMP}/kbroot\\u00e9\\ud83d\\ude00/library\", \"knowledge_repo\": {\"url\": \"fixture@example.invalid:none.git\", \"checkout_dir\": \"{TMP}/checkout\", \"cutover_done\": false}, \"extra\": [1, {\"a\": []}, {}]}",
+    "kb/overlays/defaults.json": "{\"kb_root\": \"{TMP}/kbroot\\u00e9\\ud83d\\ude00\"}"
+   },
+   "dirs": [
+    "kbroot/library"
+   ]
+  },
+  "expected": {
+   "code": 0,
+   "stdout": "{\n  \"kb_root\": \"{TMP}/kbroot\\u00e9\\ud83d\\ude00\",\n  \"library_dir\": \"{TMP}/kbroot\\u00e9\\ud83d\\ude00/library\",\n  \"knowledge_repo\": {\n    \"url\": \"fixture@example.invalid:none.git\",\n    \"checkout_dir\": \"{TMP}/checkout\",\n    \"cutover_done\": false\n  },\n  \"extra\": [\n    1,\n    {\n      \"a\": []\n    },\n    {}\n  ]\n}\n",
+   "stderr": "",
+   "tree": {}
+  }
+ },
+ {
+  "spec": {
+   "name": "flag-precedence",
+   "argv": [
+    "--library",
+    "--json",
+    "--check"
+   ],
+   "files": {
+    "kb/kb-root.json": "{\"kb_root\": \"{TMP}/kbroot\", \"library_dir\": \"{TMP}/kbroot/library\", \"knowledge_repo\": {\"url\": \"fixture@example.invalid:none.git\", \"checkout_dir\": \"{TMP}/checkout\", \"cutover_done\": false}}",
+    "kb/overlays/defaults.json": "{\"kb_root\": \"{TMP}/kbroot\"}"
+   },
+   "dirs": [
+    "kbroot/library"
+   ]
+  },
+  "expected": {
+   "code": 0,
+   "stdout": "kb_root: clean\n",
+   "stderr": "",
+   "tree": {}
+  }
+ },
+ {
+  "spec": {
+   "name": "unknown-flag-ignored",
+   "argv": [
+    "--bogus"
+   ],
+   "files": {
+    "kb/kb-root.json": "{\"kb_root\": \"{TMP}/kbroot\", \"library_dir\": \"{TMP}/kbroot/library\", \"knowledge_repo\": {\"url\": \"fixture@example.invalid:none.git\", \"checkout_dir\": \"{TMP}/checkout\", \"cutover_done\": false}}",
+    "kb/overlays/defaults.json": "{\"kb_root\": \"{TMP}/kbroot\"}"
+   },
+   "dirs": [
+    "kbroot/library"
+   ]
+  },
+  "expected": {
+   "code": 0,
+   "stdout": "{TMP}/kbroot\n",
+   "stderr": "",
+   "tree": {}
+  }
+ }
+]

@@ -1,0 +1,22 @@
+[package]
+name = "kb-tooling"
+version = "0.1.0"
+edition = "2021"
+license = "GPL-3.0-or-later"
+description = "Command-line tools for locating, refreshing, and checking a structured knowledge base."
+
+
+[lib]
+name = "kb_tooling"
+path = "src/lib.rs"
+
+[[bin]]
+name = "kb-root"
+path = "src/bin/kb_root.rs"
+
+[dependencies]
+serde_json = { version = "1", features = ["preserve_order"] }
+
+
+[dev-dependencies]
+tempfile = "3"
