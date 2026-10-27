@@ -5,7 +5,7 @@ kb-root resolves a knowledge base's configured directories and checks that their
 ## Install
 
 ```sh
-cargo install --path .
+cargo install --git https://github.com/davidawad/kd-library-tooling
 ```
 
 ## Usage
